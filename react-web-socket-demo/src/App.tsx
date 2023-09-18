@@ -4,8 +4,8 @@ import './App.css';
 
 function App() {
 
-  const [bids, setBids] = useState([0]);
-  const ws = new WebSocket("wss://ws.bitstamp.net");
+  const [time, setTime] = useState([0]);
+  const ws = new WebSocket("ws://localhost:3299/ws");
 
   const apiCall = {
     event: "bts:subscribe",
@@ -13,21 +13,15 @@ function App() {
   };
 
   ws.onopen = (event) => {
-    ws.send(JSON.stringify(apiCall));
+    console.log("connected");
   };
 
   ws.onmessage = (event) => {
     const json = JSON.parse(event.data);
-    try {
-      if (json.event === "data") {
-        setBids(json.data.bids.slice(0, 5));
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    console.log(json);
   };
 
-  const firstBids = bids.map((item) => {
+  const firstBids = time.map((item) => {
     return (
       <div>
         <p>{item}</p>
